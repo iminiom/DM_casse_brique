@@ -1,25 +1,25 @@
 # DM_casse_brique
 
-Specifications:
+Specifications:</br>
 
-general mechanics:
-     - live system
-     - time system
-     -possible menu
+general mechanics:</br>
+     - live system</br>
+     - time system</br>
+     -possible menu</br>
 
-Ball: 
-     - doesn't change seize
-     - has a variable speed
-     - randomized starting angle
-     - does no multiplicate it self
+Ball: </br>
+     - doesn't change seize</br>
+     - has a variable speed</br>
+     - randomized starting angle</br>
+     - does no multiplicate it self</br>
      
-Bricks:
-       - multiple types
-       - drawing beginning to define
+Bricks:</br>
+       - multiple types</br>
+       - drawing beginning to define</br>
       
-Board:
-     - min 3 sections
-     - doesn't change seize
-     - keyboard imputs
-     - constent speed
+Board:</br>
+     - min 3 sections</br>
+     - doesn't change seize</br>
+     - keyboard imputs</br>
+     - constent speed</br>
      
