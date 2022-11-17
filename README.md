@@ -4,7 +4,8 @@ Specifications:
 
 general mechanics:
      - live system
-     - time
+     - time system
+     -possible menu
 
 Ball: 
      - doesn't change seize
@@ -16,3 +17,9 @@ Bricks:
        - multiple types
        - drawing beginning to define
       
+Board:
+     - min 3 sections
+     - doesn't change seize
+     - keyboard imputs
+     - constent speed
+     
