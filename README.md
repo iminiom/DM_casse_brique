@@ -23,3 +23,4 @@ Board:</br>
      - keyboard imputs</br>
      - constent speed</br>
      
+to play the game, use this link: https://kitao.github.io/pyxel/wasm/launcher/?play=user_name.repo_name.dir_name.pyxapp_without_extension 
