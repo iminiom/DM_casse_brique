@@ -23,4 +23,4 @@ Board:</br>
      - keyboard imputs</br>
      - constent speed</br>
      
-to play the game, use this link: https://kitao.github.io/pyxel/wasm/launcher/?run=iminiom.DM_casse_brique.dir_main
+to play the game, use this link: https://kitao.github.io/pyxel/wasm/launcher/?run=iminiom.DM_casse_brique.main
