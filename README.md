@@ -3,7 +3,7 @@
 Specifications:</br>
 
 general mechanics:</br>
-     - live system</br>
+     - life system</br>
      - time system</br>
      -possible menu</br>
 
