@@ -10,6 +10,9 @@ balle_direction = int(0)
 plateau_x = 48
 plateau_y = 110
 
+balle_deplacement_vertical =  1
+balle_depalcement_horizontal = random.randint(-5,5)
+
 bloc = []
 balle_liste = ([])
 
@@ -31,29 +34,28 @@ def balle_creation(plateau_x, plateau_y):
     balle_x = plateau_x + 12
     balle_y = plateau_y - 12
     # btnr pour eviter les tirs multiples
-    if pyxel.btnp(pyxel.KEY_LSHIFT, 2,30):
-        pyxel.circ(balle_x,balle_y,2, 3)
+    #if pyxel.btnp(pyxel.KEY_LSHIFT, 2,30):
+    #    pyxel.circ(balle_x,balle_y,2, 3)
 
-def balle_deplacement():
-    """déplacement de la balle vers le haut """
-    global balle_y
-    global balle_x
-    global balle_en_mouvement
-    if balle_en_mouvement == True:
-        balle_y = balle_y - 1
-    afficher_balle()
-    if balle_y <= 0:
-        balle_en_mouvement = False
-        balle_x = plateau_x + 12
-        balle_y = plateau_y - 12
-       
+#def balle_deplacement_vertical():
+#    """déplacement de la balle vers le haut """
+#    global balle_y
+#    global balle_x    global balle_en_mouvement
+#    if balle_en_mouvement == True:
+#         balle_y = 
+#    afficher_balle()
+ #   if balle_y <= 0:
+#        balle_en_mouvement = False
+#        balle_y = plateau_y - 12
+
+    
+    
 def casserLaBrique():
     """casser la brique"""
     global bloc,balle_x,balle_y
-#Un bloc de 4 lignes
+    #Un bloc de 4 lignes
     for m in range (0,4):
         ligne = bloc[m] #Une ligne de 14 briques
-        
         for n in range (0,13):
             brique = ligne[n]  #une brique définie par x1,x2,y,présence(1)/abscence(0)
             if balle_x >= brique[1] and balle_x <= brique[2]:
@@ -64,7 +66,7 @@ def casserLaBrique():
                     
 def reDisplayBriques():           
     global bloc
-    print('redisplayyyyyyyyyyyyyyyyyyy')
+    print('redisplayy')
     for m in range(0,4):
         ligne = bloc[m]
         for n in range(0,13):
@@ -74,9 +76,6 @@ def reDisplayBriques():
             else:
                 pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,8)
             
-            
-
-
 def balle_lancement():
     """la balle est lancee en appuiant sur shift (de gauche)"""
     global balle_x
@@ -106,13 +105,13 @@ def afficher_balle():
 def creer_brique():
     ligne1 = []
     for n in range (0,13):
-        brique =[10+8*n,10+8*n+8,1]
+        brique =[10+8*n,10+8*n+8,1] #
         ligne1.append(brique)
 
 def update():
     """mise à jour des variables (30 fois par seconde)"""
 
-    global plateau_x, plateau_y
+    global plateau_x, plateau_y, balle_x, balle_y, balle_deplacement_vertical, balle_deplacement_horizontal
     print('Update')
 
     # mise à jour de la position du plateau
@@ -126,13 +125,35 @@ def update():
     print('lancement')
     balle_lancement()
     print('deplacement')
-    balle_deplacement()
+    #balle_deplacement()
     casserLaBrique()
+    #reDisplayBriques()
     # mise a jour de la position de la balle 
-#    balle_liste = balle_deplacement(balle_liste)
-
-
+    #balle_liste = balle_deplacement(balle_liste)
     
+    
+    balle_y = balle_y + balle_deplacement_vertical 
+    balle_x = balle_x + balle_deplacement_horizontal # -->Traceback (most recent call last):  File "<string>", line 136, in update #
+    balle_deplacement_vertical = balle_deplacement_vertical 
+    balle_depalcement_horizontal = balle_deplacement_horizontal 
+
+    if balle_x >= 256 : 
+        balle_deplacement_horizontal = -1
+        
+        
+    if balle_x <= 0 : 
+        balle_deplacement_horizontal = 1 
+    
+    if balle_y >= 256 :
+        balle_y =int(60)
+        balle_x =int(60)
+        balle_deplacement_horizontal = random.randint(-5,5)
+
+        
+    if balle_y <= 0 :
+        balle_deplacement_vertical = 1 
+
+
 def draw():
     print('draw')
     
@@ -171,5 +192,6 @@ def draw():
     for m in range(0,4):
         for n in range(0,13):
             pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,8)
-           
+            
+
 pyxel.run(draw, update)        
