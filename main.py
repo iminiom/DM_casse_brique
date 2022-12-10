@@ -51,7 +51,7 @@ def casserLaBrique():
                     """brique touchee"""
                     if brique [3] == 'normale':
                         brique[3] = 'cassee'
-                        brique[4] = 0 			#nombre de vies restantes (0)
+                        brique[4] = 0 #nombre de vies restantes (0)
                         reDisplayBriques()
                         cassee = True
                     else:
@@ -71,8 +71,8 @@ def reDisplayBriques():
         ligne = bloc[m]
         for n in range(0,13):
             brique = ligne[n]
-            coleur = coleur_brique(brique[3], brique[4])
-            pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,coleur)
+            couleur = couleur_brique(brique[3], brique[4])
+            pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,couleur)
             
 def balle_lancement():
     """la balle est lancee en appuiant sur shift (de gauche)"""
@@ -93,14 +93,39 @@ def afficher_balle():
         pyxel.circ(balle_x,balle_y, 2, 3)
 
 def balle_deplacement():
-    global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y
+    global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, plateau_x, plateau_y
     if balle_en_mouvement == True:
         balle_x = balle_x + direction_x
         balle_y = balle_y + direction_y
         afficher_balle()
-    #rebondir sur le bords
-    if balle_x <=0 or balle_x >= 120 or balle_y <=0:
+    #rebondir sur le mur droite
+    if balle_x <=0:	#or balle_x >= 120 or balle_y <=0:
+        rebondir_mur()
+        return
+     #rebondir sur le mur gauche
+    if balle_x >= 128:
+        rebondir_mur()
+        return
+    #rebondir sur le mur du haut
+    if balle_y <= 0:
         rebondir()
+        return
+        
+    #rebondir sur le plateau
+    #print(balle_x, balle_y, plateau_x, plateau_y)
+    
+    if balle_x >= plateau_x+8 and balle_x <= plateau_x+16 and balle_y >= 112:
+        rebondir()
+        return
+    
+    if balle_x >= plateau_x and balle_x <= plateau_x+8 and balle_y >= 112:
+        rebondir_gauche()
+        return
+    
+    if balle_x >= plateau_x+16 and balle_x <= plateau_x+24 and balle_y >= 112:
+        rebondir_droite()
+        return
+    
     #balle perdue
     if balle_y >=120:
         balle_en_mouvement = False
@@ -111,11 +136,27 @@ def balle_deplacement():
         
 def rebondir():
     global direction_x, direction_y
+    print('rebondirrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
     if direction_x != 0:
         direction_x = -1 * direction_x
     if direction_y != 0:
         direction_y = -1 * direction_y
+        
+def rebondir_gauche():
+    global direction_x, direction_y
+    direction_x = -1
+    direction_y = -1
+        
+def rebondir_droite():
+    global direction_x, direction_y
+    direction_x = 1
+    direction_y = -1
     
+def rebondir_mur():
+    global direction_x, direction_y
+    direction_x = -1*direction_x
+
+
 
 def creer_brique():
     ligne1 = []
@@ -151,35 +192,33 @@ def creer_bloc():
         ligne4.append(brique)
     bloc.append(ligne4)
        
-    print(bloc)
     for m in range(0,3):
         for n in range(0,13):
-            coleur = coleur_brique(bloc[m][n][3],bloc[m][n][4])
-            pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,coleur)
+            couleur = couleur_brique(bloc[m][n][3],bloc[m][n][4])
+            pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,couleur)
             
-    print (bloc)
     return bloc            
 
-def coleur_brique(type_de_brique, nombre_de_vies):
-    coleur = 8
+def couleur_brique(type_de_brique, nombre_de_vies):
+    couleur = 8
     if type_de_brique == 'cassee':
-        coleur = 0
-        return coleur
+        couleur = 0
+        return couleur
     
     if type_de_brique == 'a vies':
         if nombre_de_vies == 3:
-            coleur = 7
+            couleur = 7
         if nombre_de_vies == 2:
-            coleur = 6
+            couleur = 6
         if nombre_de_vies == 1:
             """1 vie = brique normale"""
-            coleur = 8 
-        return coleur
+            couleur = 8 
+        return couleur
 
     if type_de_brique == 'incassable':
-        coleur = 5
-        return coleur
-    return coleur
+        couleur = 5
+        return couleur
+    return couleur
 
 def update():
     """mise à jour des variables (30 fois par seconde)"""
@@ -235,11 +274,8 @@ def draw():
         
     reDisplayBriques()
 
-    # plateau (carre 8x8)
+    # plateau (rectangle)
     pyxel.rect(plateau_x, plateau_y, 24, 8, 1)
-    pyxel.rect(plateau_x + 8, plateau_y - 8,8,8,1)
-    pyxel.tri(plateau_x, plateau_y, plateau_x+8, plateau_y, plateau_x+8, plateau_y-8, 1)
-    pyxel.tri(plateau_x+15, plateau_y, plateau_x+23, plateau_y, plateau_x+15, plateau_y-8,1)
     
     #balle (rayon 2)
     #pyxel.circ(plateau_x + 12, plateau_y - 12, 2, 3)    
@@ -253,4 +289,3 @@ def draw():
 
 creer_bloc()
 pyxel.run(draw, update) 
-
