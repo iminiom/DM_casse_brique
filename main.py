@@ -454,11 +454,16 @@ def update():
             vitesse = 3
         if score > 100:
             vitesse = 5
-    else:
-        #affiche message de fin
+            
+    elif vies == 0:
+        #affiche message de fin( perdant)
         pyxel.text(45,60,'GAME OVER ! \n \n you died',7)
         pyxel.text(25,120,'(press esc to quit)',7)
-
+        
+    else:
+        #affiche message de fin(gagnant)
+        pyxel.text(45,60,'BRAVO ! \n \n vous avez gagné',7)
+        pyxel.text(25,120,'(press esc to quit)',7)
 def draw():
     """création des objets (30 fois par seconde)"""
     
