@@ -44,27 +44,37 @@ def casserLaBrique():
     for m in range (0,4):
         ligne = bloc[m] #Une ligne de 13 briques
         for n in range (0,13):
-            brique = ligne[n]  #une brique définie par x1,x2,y,type de brique, vies 
-            if balle_x+1 >= brique[0] and balle_x-1 <= brique[1]:
+            brique = ligne[n]  #une brique définie par x1,x2,y,type de brique, vies
+            #print('brique =',brique, ' balle_x =', balle_x, ' balle_y =', balle_y)
+            if balle_x-2 <= brique[1] and balle_x+2 >= brique[0] :
                 
-                if balle_y <= brique[2]:
+                if balle_y+2 >= brique[2] and balle_y-2 <= brique[2] +4:
                     """brique touchee"""
+                    print('casée')
                     if brique [3] == 'normale':
                         brique[3] = 'cassee'
                         brique[4] = 0 #nombre de vies restantes (0)
                         reDisplayBriques()
                         cassee = True
-                    else:
-                        if brique [3] == 'a vies':
-                            print('brique a vies avant',brique)
-                            brique [4] = brique [4] - 1 #retirer une vie
-                            if brique [4] == 1: #si plus que une vie passer en brique normale
-                                brique [3] = 'normale'
-                                reDisplayBriques()
-                            cassee = True
-                            print('brique a vies APRES',brique)
-    if cassee == True:
-        rebondir()
+                    elif brique [3] == 'a vies':
+                        print('brique a vies avant',brique)
+                        brique [4] = brique [4] - 1 #retirer une vie
+                        if brique [4] == 1: #si plus que une vie passer en brique normale
+                            brique [3] = 'normale'
+                            reDisplayBriques()
+                        cassee = True
+                        print('brique a vies APRES',brique)
+                        
+                    elif brique [3] == 'incassable':
+                        print('brique incassable')
+                        rebondir()
+                        cassee = False
+                        return
+                  
+        if cassee == True:
+            rebondir()
+            return
+        
 def reDisplayBriques():           
     global bloc
     for m in range(0,4):
@@ -95,8 +105,8 @@ def afficher_balle():
 def balle_deplacement():
     global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, plateau_x, plateau_y
     if balle_en_mouvement == True:
-        balle_x = balle_x + direction_x
-        balle_y = balle_y + direction_y
+        balle_x = balle_x + 2*direction_x
+        balle_y = balle_y + 2*direction_y
         afficher_balle()
     #rebondir sur le mur droite
     if balle_x <=0:	#or balle_x >= 120 or balle_y <=0:
@@ -108,7 +118,7 @@ def balle_deplacement():
         return
     #rebondir sur le mur du haut
     if balle_y <= 0:
-        rebondir()
+        rebondir_mur_haut()
         return
         
     #rebondir sur le plateau
@@ -155,7 +165,10 @@ def rebondir_droite():
 def rebondir_mur():
     global direction_x, direction_y
     direction_x = -1*direction_x
-
+    
+def rebondir_mur_haut():
+    global direction_y
+    direction_y = 1
 
 
 def creer_brique():
@@ -168,30 +181,31 @@ def creer_bloc():
     global bloc
     
     #Une ligne de briques normales
-    ligne1 = [] #Une ligne de 13 briques normales
-    for n1 in range (0,13):
-        brique = [10*n1,10*n1+8,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne1.append(brique)
-    bloc.append(ligne1)
-    
-    ligne2 = [] #Une ligne de 13 briques a 3 vies
-    for n2 in range (0,13):
-        brique = [10*n2,10*n2+8,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne2.append(brique)
-    bloc.append(ligne2)
-    
-    ligne3 = [] #Une ligne de 13 briques a 3 vies
-    for n3 in range (0,13):
-        brique = [10*n3,10*n3+8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne3.append(brique)
-    bloc.append(ligne3)
-    
     ligne4 = [] #Une ligne de 13 briques
     for n4 in range (0,13):
         brique = [10*n4,10*n4+8,30,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
         ligne4.append(brique)
     bloc.append(ligne4)
-       
+
+    ligne3 = [] #Une ligne de 13 briques a 3 vies
+    for n3 in range (0,13):
+        brique = [10*n3,10*n3+8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+        ligne3.append(brique)
+    bloc.append(ligne3)
+        
+    ligne2 = [] #Une ligne de 13 briques a 3 vies
+    for n2 in range (0,13):
+        brique = [10*n2,10*n2+8,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+        ligne2.append(brique)
+    bloc.append(ligne2)
+    
+    #Une ligne de briques normales
+    ligne1 = [] #Une ligne de 13 briques normales
+    for n1 in range (0,13):
+        brique = [10*n1,10*n1+8,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+        ligne1.append(brique)
+    bloc.append(ligne1)
+   
     for m in range(0,3):
         for n in range(0,13):
             couleur = couleur_brique(bloc[m][n][3],bloc[m][n][4])
@@ -216,7 +230,7 @@ def couleur_brique(type_de_brique, nombre_de_vies):
         return couleur
 
     if type_de_brique == 'incassable':
-        couleur = 5
+        couleur = 10
         return couleur
     return couleur
 
@@ -232,7 +246,8 @@ def update():
     # mise a jour lancement balle
     balle_lancement()
     balle_deplacement()
-    casserLaBrique()
+    if balle_y < 32:
+        casserLaBrique()
     #reDisplayBriques()
     # mise a jour de la position de la balle 
       
