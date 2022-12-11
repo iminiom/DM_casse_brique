@@ -3,6 +3,10 @@
 To play the game, use this link: https://kitao.github.io/pyxel/wasm/launcher/?run=iminiom.DM_casse_brique.main
 
 
+To launch the ball press left Shift
+To move to the right use D
+To move to the left use Q
+
 Specifications:</br>
 
 general mechanics:</br>
