@@ -7,7 +7,7 @@ balle_y = int(60)
 balle_en_mouvement = False
 direction_x=0
 direction_y=-1
-vitesse = 1
+vitesse = 2
 
 plateau_x = 48
 plateau_y = 110
@@ -216,7 +216,7 @@ def creer_bloc():
     brique = [10,18,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne1.append(brique)
     #brique2 normale
-    brique = [20,28,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [20,28,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne1.append(brique)
     #brique3 normale
     brique = [30,38,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
@@ -240,7 +240,7 @@ def creer_bloc():
     brique = [90,98,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne1.append(brique)
     #brique10 incassable
-    brique = [100,108,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [100,108,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne1.append(brique)
     #brique11 a vies
     brique = [110,118,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
@@ -252,7 +252,7 @@ def creer_bloc():
     bloc.append(ligne1)
         
    
-    print(bloc)
+    
     for m in range(0,3):
         for n in range(0,13):
             couleur = couleur_brique(bloc[m][n][3],bloc[m][n][4])
@@ -309,7 +309,6 @@ def casserLaBrique():
                         score = score + 5								# si une brique normale est cassée aors le score augmente de 5
                         cassee = True
                     elif brique [3] == 'a vies':
-                        print('brique a vies avant',brique)
                         brique [4] = brique [4] - 1						#retirer une vie
                         if brique [4] == 1: 							#si la brique n'a plus qu'une vie alors c'est une brique normale
                             brique [3] = 'normale'
@@ -339,12 +338,12 @@ def balle_deplacement():
         afficher_balle()
         
     #rebondir sur le mur droite
-    if balle_x <=0:
+    if balle_x <=2:
         rebondir_mur()
         return
     
      #rebondir sur le mur gauche
-    if balle_x >= 128:
+    if balle_x >= 126:
         rebondir_mur()
         return
     
@@ -392,7 +391,7 @@ def rebondir():
         direction_y = -1 * direction_y
 
 def rebondir_gauche():
-    """  fait repoartir vers la gauche """
+    """  fait repartir vers la gauche """
     
     global direction_x, direction_y
     
@@ -400,12 +399,12 @@ def rebondir_gauche():
     direction_y = -1
         
 def rebondir_droite():
-     """fait repoartir vers la droite"""
+     """fait repartir vers la droite"""
+     global direction_x
+     global direction_y
     
-    global direction_x, direction_y
-    
-    direction_x = 1
-    direction_y = -1
+     direction_x = 1
+     direction_y = -1
     
 def rebondir_mur():
     """fait repartir dans le sens oposé ( en horizontal seulement)"""
