@@ -282,6 +282,7 @@ def balle_lancement():
             balle_x=plateau_x+12
             balle_y=plateau_y
             direction_x=random.randint(-2,2)
+            direction_y = 1
             
             afficher_balle()
             balle_en_mouvement=True
@@ -462,7 +463,7 @@ def update():
         
     else:
         #affiche message de fin(gagnant)
-        pyxel.text(45,60,'BRAVO ! \n \n vous avez gagné',7)
+        pyxel.text(45,60,'GOOD JOB ! \n \n you won',7)
         pyxel.text(25,120,'(press esc to quit)',7)
 def draw():
     """création des objets (30 fois par seconde)"""
@@ -475,11 +476,11 @@ def draw():
     pyxel.rect(plateau_x, plateau_y, 24, 8, 1)
     
     # affiche le score en haut a gauche
-    pyxel.text(0,0,'score: '+str(score),7)
+    pyxel.text(0,3,'score: '+str(score),7)
     
     
     #affiche les vies en haut a droite
-    pyxel.text(100,0,'vies: '+str(vies),7)
+    pyxel.text(100,3,'vies: '+str(vies),7)
     
 creer_bloc()
 pyxel.run(draw, update) 
