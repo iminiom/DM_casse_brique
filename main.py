@@ -22,7 +22,7 @@ score = 0
 vies = 3
 
 def plateau_deplacement(x, y):
-    """déplacement avec les touches de directions"""
+    """déplacement avec les touches Q opur la gauche et D pour la droite"""
 
     if pyxel.btn(pyxel.KEY_D):
         if (x < 105) :
@@ -32,151 +32,39 @@ def plateau_deplacement(x, y):
             x = x - 1
     return x, y
   
-def casserLaBrique():
-    """casser la brique"""
-    global bloc,balle_x,balle_y,score
-    cassee=False
-    #Un bloc de 4 lignes
-    for m in range (0,4):
-        ligne = bloc[m] #Une ligne de 13 briques
-        for n in range (0,13):
-            brique = ligne[n]  #une brique définie par x1,x2,y,type de brique, vies
-            #print('brique =',brique, ' balle_x =', balle_x, ' balle_y =', balle_y)
-            if balle_x-2 <= brique[1] and balle_x+2 >= brique[0] :
-                
-                if balle_y+2 >= brique[2] and balle_y-2 <= brique[2] +4:
-                    """brique touchee"""
-                    print('casée')
-                    if brique [3] == 'normale':
-                        brique[3] = 'cassee'
-                        brique[4] = 0 #nombre de vies restantes (0)
-                        displayBriques()
-                        score = score + 5
-                        cassee = True
-                    elif brique [3] == 'a vies':
-                        print('brique a vies avant',brique)
-                        brique [4] = brique [4] - 1 #retirer une vie
-                        if brique [4] == 1: #si plus que une vie passer en brique normale
-                            brique [3] = 'normale'
-                            displayBriques()
-                            score = score + 5
-                        cassee = True
-                        print('brique a vies APRES',brique)
-                        
-                    elif brique [3] == 'incassable':
-                        print('brique incassable')
-                        rebondir()
-                        cassee = False
-                        return
-                  
-        if cassee == True:
-            rebondir()
-            return
-        
-def displayBriques():           
-    global bloc
-    for m in range(0,4):
-        ligne = bloc[m]
-        for n in range(0,13):
-            brique = ligne[n]
-            couleur = couleur_brique(brique[3], brique[4])
-            pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,couleur)
-            
-def balle_lancement():
-    """la balle est lancee en appuiant sur shift (de gauche)"""
-    global balle_x,balle_y,balle_en_mouvement,direction_x
-    if balle_en_mouvement == False:
-        if pyxel.btn(pyxel.KEY_LSHIFT):
-            balle_x=plateau_x+12
-            balle_y=plateau_y
-            direction_x=random.randint(-2,2)
-            
-            afficher_balle()
-            balle_en_mouvement=True
-
 def afficher_balle():
     global balle_x
     global balle_y
     if balle_y > 0 and balle_x > 0:
         pyxel.circ(balle_x,balle_y, 2, 14)
-
-def balle_deplacement():
-    global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, vitesse, plateau_x, plateau_y, vies
-    if balle_en_mouvement == True:
-        balle_x = balle_x + (vitesse * direction_x)
-        balle_y = balle_y + (vitesse * direction_y)
-        afficher_balle()
-    #rebondir sur le mur droite
-    if balle_x <=0:	#or balle_x >= 120 or balle_y <=0:
-        rebondir_mur()
-        return
-     #rebondir sur le mur gauche
-    if balle_x >= 128:
-        rebondir_mur()
-        return
-    #rebondir sur le mur du haut
-    if balle_y <= 0:
-        rebondir_mur_haut()
-        return
-    
-    #rebondir sur le plateau    
-    if balle_x >= plateau_x+8 and balle_x <= plateau_x+16 and balle_y >= 112:
-        repartir_vertical()
-        return
-    
-    if balle_x >= plateau_x and balle_x <= plateau_x+8 and balle_y >= 112:
-        rebondir_gauche()
-        return
-    
-    if balle_x >= plateau_x+16 and balle_x <= plateau_x+24 and balle_y >= 112:
-        rebondir_droite()
-        return
-    
-    #balle perdue
-    if balle_y >=120:
-        balle_en_mouvement = False
-        direction_x = 0
-        direction_y = -1
-        balle_x = 60
-        balle_y = 60
-        vies = vies -1
         
-def rebondir():
-    global direction_x, direction_y
-    print('rebondirrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
-    if direction_x != 0:
-        direction_x = -1 * direction_x
-    if direction_y != 0:
-        direction_y = -1 * direction_y
-        
-def rebondir_gauche():
-    global direction_x, direction_y
-    direction_x = -1
-    direction_y = -1
-        
-def rebondir_droite():
-    global direction_x, direction_y
-    direction_x = 1
-    direction_y = -1
-    
-def rebondir_mur():
-    global direction_x, direction_y
-    direction_x = -1*direction_x
-    
-def rebondir_mur_haut():
-    global direction_y
-    direction_y = 1
-
-def repartir_vertical():
-    global direction_x,direction_y
-    direction_x = 0
-    direction_y = -1
-
 def creer_brique():
     ligne1 = []
     for n in range (0,13):
-        brique =[10+8*n,10+8*n+8,1] #
+        brique =[10+8*n,10+8*n+8,1] 
         ligne1.append(brique)
+
+
+def couleur_brique(type_de_brique, nombre_de_vies):
+    couleur = 12
+    if type_de_brique == 'cassee':
+        couleur = 0
+        return couleur
+    
+    if type_de_brique == 'a vies':
+        if nombre_de_vies == 3:
+            couleur = 3
+        if nombre_de_vies == 2:
+            couleur = 11
+        if nombre_de_vies == 1:
+            """1 vie = brique normale"""
+            couleur = 12
+        return couleur
+
+    if type_de_brique == 'incassable':
+        couleur = 10
+        return couleur
+    return couleur
 
 def creer_bloc():
     global bloc
@@ -228,7 +116,7 @@ def creer_bloc():
     
     
 
-    ligne3 = [] #Une ligne de 13 briques a 3 vies
+    ligne3 = [] #Une ligne de 13 briques 
     
     #brique0 a vies
     brique = [0,8,35,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
@@ -274,7 +162,7 @@ def creer_bloc():
         
         
         
-    ligne2 = [] #Une ligne de 13 briques a 3 vies
+    ligne2 = [] #Une ligne de 13 briques 
     
     #brique0 a vies
     brique = [0,8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
@@ -318,9 +206,10 @@ def creer_bloc():
     
     bloc.append(ligne2)
     
-    #Une ligne de briques normales
-    ligne1 = [] #Une ligne de 13 briques normales
-     #brique0 a vies
+    
+    ligne1 = [] #Une ligne de 13 briques
+    
+    #brique0 a vies
     brique = [0,8,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne1.append(brique)
     #brique1 a vies
@@ -371,26 +260,176 @@ def creer_bloc():
             
     return bloc            
 
-def couleur_brique(type_de_brique, nombre_de_vies):
-    couleur = 12
-    if type_de_brique == 'cassee':
-        couleur = 0
-        return couleur
+def displayBriques():           
+    global bloc
     
-    if type_de_brique == 'a vies':
-        if nombre_de_vies == 3:
-            couleur = 3
-        if nombre_de_vies == 2:
-            couleur = 11
-        if nombre_de_vies == 1:
-            """1 vie = brique normale"""
-            couleur = 12
-        return couleur
+    for m in range(0,4):
+        ligne = bloc[m]
+        
+        for n in range(0,13):
+            brique = ligne[n]
+            couleur = couleur_brique(brique[3], brique[4])
+            pyxel.rect(bloc[m][n][0],bloc[m][n][2],8,4,couleur)
+            
 
-    if type_de_brique == 'incassable':
-        couleur = 10
-        return couleur
-    return couleur
+def balle_lancement():
+    """la balle est lancee en appuiant sur shift (gauche)"""
+    global balle_x,balle_y,balle_en_mouvement,direction_x
+    
+    if balle_en_mouvement == False:
+        
+        if pyxel.btn(pyxel.KEY_LSHIFT):
+            balle_x=plateau_x+12
+            balle_y=plateau_y
+            direction_x=random.randint(-2,2)
+            
+            afficher_balle()
+            balle_en_mouvement=True
+
+
+def casserLaBrique():
+    """casser la brique lors d'un contact en fonction du type de la brique"""
+    global bloc,balle_x,balle_y,score
+    cassee=False
+    
+    for m in range (0,4):												#Un bloc de 4 lignes
+        ligne = bloc[m]
+        for n in range (0,13):											#Une ligne de 13 briques
+            brique = ligne[n]  
+            
+            if balle_x-2 <= brique[1] and balle_x+2 >= brique[0] :
+                
+                if balle_y+2 >= brique[2] and balle_y-2 <= brique[2] +4:
+                    """alors la brique est touchée"""
+                    
+                    if brique [3] == 'normale':
+                        brique[3] = 'cassee'
+                        brique[4] = 0 									#nombre de vies restantes (0)
+                        displayBriques()
+                        score = score + 5								# si une brique normale est cassée aors le score augmente de 5
+                        cassee = True
+                    elif brique [3] == 'a vies':
+                        print('brique a vies avant',brique)
+                        brique [4] = brique [4] - 1						#retirer une vie
+                        if brique [4] == 1: 							#si la brique n'a plus qu'une vie alors c'est une brique normale
+                            brique [3] = 'normale'
+                            displayBriques()
+                            score = score + 5							# si une brique a vies as qu'une vie alors on ajoute 5pts au score
+                        cassee = True
+                        
+                    elif brique [3] == 'incassable':
+                        rebondir()										#rebondir sur une brique incassable sans rien changer au score
+                        cassee = False
+                        return
+                  
+        if cassee == True:
+            rebondir()													#rebondir sur la brique 
+            return
+        
+
+
+
+def balle_deplacement():
+    
+    global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, vitesse, plateau_x, plateau_y, vies
+    
+    if balle_en_mouvement == True:
+        balle_x = balle_x + (vitesse * direction_x)
+        balle_y = balle_y + (vitesse * direction_y)
+        afficher_balle()
+        
+    #rebondir sur le mur droite
+    if balle_x <=0:
+        rebondir_mur()
+        return
+    
+     #rebondir sur le mur gauche
+    if balle_x >= 128:
+        rebondir_mur()
+        return
+    
+    #rebondir sur le mur du haut
+    if balle_y <= 0:
+        rebondir_mur_haut()
+        return
+    
+    #rebondir sur le plateau
+    
+    #section du centre
+    if balle_x >= plateau_x+8 and balle_x <= plateau_x+16 and balle_y >= 112:
+        repartir_vertical()
+        return
+    
+    #section de droite
+    if balle_x >= plateau_x and balle_x <= plateau_x+8 and balle_y >= 112:
+        rebondir_gauche()
+        return
+    
+    #section de gauche
+    if balle_x >= plateau_x+16 and balle_x <= plateau_x+24 and balle_y >= 112:
+        rebondir_droite()
+        return
+    
+    #balle perdue
+    if balle_y >=120:
+        
+        balle_en_mouvement = False
+        direction_x = 0
+        direction_y = -1			#pour monter
+        balle_x = 60				#reviens au point de départ (au centre sur le plateau)
+        balle_y = 60
+        vies = vies -1				#perdre la balle fait perdre une vie 
+        
+def rebondir():
+    """ inverse direction verticale et horizontale lors d'un collision """
+    
+    global direction_x, direction_y
+    
+    if direction_x != 0:
+        direction_x = -1 * direction_x
+        
+    if direction_y != 0:
+        direction_y = -1 * direction_y
+
+def rebondir_gauche():
+    """  fait repoartir vers la gauche """
+    
+    global direction_x, direction_y
+    
+    direction_x = -1
+    direction_y = -1
+        
+def rebondir_droite():
+     """fait repoartir vers la droite"""
+    
+    global direction_x, direction_y
+    
+    direction_x = 1
+    direction_y = -1
+    
+def rebondir_mur():
+    """fait repartir dans le sens oposé ( en horizontal seulement)"""
+    
+    global direction_x, direction_y
+    
+    direction_x = -1*direction_x
+    
+def rebondir_mur_haut():
+    """fait repartir vers le bas"""
+    
+    global direction_y
+    
+    direction_y = 1
+
+def repartir_vertical():
+    """fait monter vers le haut tout droit"""
+    
+    global direction_x,direction_y
+    
+    direction_x = 0
+    direction_y = -1
+
+
 
 def update():
     """mise à jour des variables (30 fois par seconde)"""
@@ -409,7 +448,7 @@ def update():
         if balle_y < 50:
             casserLaBrique()
 
-            # mise a jour de la vitesse en fonction du score
+        # mise a jour de la vitesse en fonction du score
         if score > 30:
             vitesse = 2
         if score > 70:
@@ -417,26 +456,26 @@ def update():
         if score > 100:
             vitesse = 5
     else:
+        #affiche message de fin
         pyxel.text(45,60,'GAME OVER ! \n \n you died',7)
         pyxel.text(25,120,'(press esc to quit)',7)
 
 def draw():
-    """création des objets (30 fois par seconde)
-    creer_brique()"""
+    """création des objets (30 fois par seconde)"""
+    
     # vide la fenetre
     pyxel.cls(0) 
     displayBriques()
 
-    # plateau (rectangle)
+    # crée le plateau (rectangle)
     pyxel.rect(plateau_x, plateau_y, 24, 8, 1)
     
-    # score en haut a gauche
+    # affiche le score en haut a gauche
     pyxel.text(0,0,'score: '+str(score),7)
     
+    
+    #affiche les vies en haut a droite
     pyxel.text(100,0,'vies: '+str(vies),7)
     
-    #balle (rayon 2)
-    #pyxel.circ(plateau_x + 12, plateau_y - 12, 2, 3)    
-
 creer_bloc()
 pyxel.run(draw, update) 
