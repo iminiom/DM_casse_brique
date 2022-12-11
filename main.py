@@ -7,6 +7,7 @@ balle_y = int(60)
 balle_en_mouvement = False
 direction_x=0
 direction_y=-1
+vitesse = 1
 
 plateau_x = 48
 plateau_y = 110
@@ -17,6 +18,8 @@ balle_deplacement_horizontal = random.randint(-5,5)
 bloc = []
 balle_liste = ([])
 
+score = 0
+vies = 3
 
 def plateau_deplacement(x, y):
     """déplacement avec les touches de directions"""
@@ -28,17 +31,10 @@ def plateau_deplacement(x, y):
         if (x > 0) :
             x = x - 1
     return x, y
-"""
-def balle_creation(plateau_x, plateau_y):
-    création de la balle sur le plateau, par la touche shift de gauche
-    global balle_x
-    global balle_y
-    balle_x = plateau_x + 12
-    balle_y = plateau_y - 12
-"""    
+  
 def casserLaBrique():
     """casser la brique"""
-    global bloc,balle_x,balle_y
+    global bloc,balle_x,balle_y,score
     cassee=False
     #Un bloc de 4 lignes
     for m in range (0,4):
@@ -54,14 +50,16 @@ def casserLaBrique():
                     if brique [3] == 'normale':
                         brique[3] = 'cassee'
                         brique[4] = 0 #nombre de vies restantes (0)
-                        reDisplayBriques()
+                        displayBriques()
+                        score = score + 5
                         cassee = True
                     elif brique [3] == 'a vies':
                         print('brique a vies avant',brique)
                         brique [4] = brique [4] - 1 #retirer une vie
                         if brique [4] == 1: #si plus que une vie passer en brique normale
                             brique [3] = 'normale'
-                            reDisplayBriques()
+                            displayBriques()
+                            score = score + 5
                         cassee = True
                         print('brique a vies APRES',brique)
                         
@@ -75,7 +73,7 @@ def casserLaBrique():
             rebondir()
             return
         
-def reDisplayBriques():           
+def displayBriques():           
     global bloc
     for m in range(0,4):
         ligne = bloc[m]
@@ -86,13 +84,13 @@ def reDisplayBriques():
             
 def balle_lancement():
     """la balle est lancee en appuiant sur shift (de gauche)"""
-    global balle_x
-    global balle_y
-    global balle_en_mouvement
+    global balle_x,balle_y,balle_en_mouvement,direction_x
     if balle_en_mouvement == False:
         if pyxel.btn(pyxel.KEY_LSHIFT):
             balle_x=plateau_x+12
             balle_y=plateau_y
+            direction_x=random.randint(-2,2)
+            
             afficher_balle()
             balle_en_mouvement=True
 
@@ -103,10 +101,10 @@ def afficher_balle():
         pyxel.circ(balle_x,balle_y, 2, 3)
 
 def balle_deplacement():
-    global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, plateau_x, plateau_y
+    global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, vitesse, plateau_x, plateau_y, vies
     if balle_en_mouvement == True:
-        balle_x = balle_x + 2*direction_x
-        balle_y = balle_y + 2*direction_y
+        balle_x = balle_x + vitesse*direction_x
+        balle_y = balle_y + vitesse*direction_y
         afficher_balle()
     #rebondir sur le mur droite
     if balle_x <=0:	#or balle_x >= 120 or balle_y <=0:
@@ -120,12 +118,10 @@ def balle_deplacement():
     if balle_y <= 0:
         rebondir_mur_haut()
         return
-        
-    #rebondir sur le plateau
-    #print(balle_x, balle_y, plateau_x, plateau_y)
     
+    #rebondir sur le plateau    
     if balle_x >= plateau_x+8 and balle_x <= plateau_x+16 and balle_y >= 112:
-        rebondir()
+        repartir_vertical()
         return
     
     if balle_x >= plateau_x and balle_x <= plateau_x+8 and balle_y >= 112:
@@ -143,6 +139,7 @@ def balle_deplacement():
         direction_y = -1
         balle_x = 60
         balle_y = 60
+        vies = vies -1
         
 def rebondir():
     global direction_x, direction_y
@@ -170,6 +167,10 @@ def rebondir_mur_haut():
     global direction_y
     direction_y = 1
 
+def repartir_vertical():
+    global direction_x,direction_y
+    direction_x = 0
+    direction_y = -1
 
 def creer_brique():
     ligne1 = []
@@ -183,20 +184,96 @@ def creer_bloc():
     #Une ligne de briques normales
     ligne4 = [] #Une ligne de 13 briques
     for n4 in range (0,13):
-        brique = [10*n4,10*n4+8,30,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+        brique = [10*n4,10*n4+8,30,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
         ligne4.append(brique)
     bloc.append(ligne4)
 
     ligne3 = [] #Une ligne de 13 briques a 3 vies
-    for n3 in range (0,13):
-        brique = [10*n3,10*n3+8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne3.append(brique)
+    
+    #brique0 a vies
+    brique = [0,8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique1 a vies
+    brique = [10,18,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique2 normale
+    brique = [20,28,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique3 normale
+    brique = [30,38,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique4 incassable
+    brique = [40,48,25,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique5 normale
+    brique = [50,58,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique6 normale
+    brique = [60,68,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique7 incassable
+    brique = [70,78,25,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique8 normale
+    brique = [80,88,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique9 normale
+    brique = [90,98,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique10 incassable
+    brique = [100,108,25,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique11 a vies
+    brique = [110,118,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    #brique12 a vies
+    brique = [120,128,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne3.append(brique)
+    
     bloc.append(ligne3)
         
     ligne2 = [] #Une ligne de 13 briques a 3 vies
-    for n2 in range (0,13):
-        brique = [10*n2,10*n2+8,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne2.append(brique)
+    
+    #brique0 a vies
+    brique = [0,8,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique1 a vies
+    brique = [10,18,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique2 normale
+    brique = [20,28,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique3 normale
+    brique = [30,38,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique4 incassable
+    brique = [40,48,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique5 normale
+    brique = [50,58,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique6 normale
+    brique = [60,68,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique7 incassable
+    brique = [70,78,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique8 normale
+    brique = [80,88,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique9 normale
+    brique = [90,98,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique10 incassable
+    brique = [100,108,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique11 a vies
+    brique = [110,118,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    #brique12 a vies
+    brique = [120,128,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne2.append(brique)
+    
     bloc.append(ligne2)
     
     #Une ligne de briques normales
@@ -206,6 +283,7 @@ def creer_bloc():
         ligne1.append(brique)
     bloc.append(ligne1)
    
+    print(bloc)
     for m in range(0,3):
         for n in range(0,13):
             couleur = couleur_brique(bloc[m][n][3],bloc[m][n][4])
@@ -239,68 +317,45 @@ def update():
 
     global plateau_x, plateau_y, balle_x, balle_y
     global balle_deplacement_vertical, balle_deplacement_horizontal
+    global vies, score, vitesse
 
     # mise à jour de la position du plateau
     plateau_x, plateau_y = plateau_deplacement(plateau_x, plateau_y)
     
-    # mise a jour lancement balle
-    balle_lancement()
-    balle_deplacement()
-    if balle_y < 32:
-        casserLaBrique()
-    #reDisplayBriques()
-    # mise a jour de la position de la balle 
-      
-    #balle_liste = balle_deplacement(balle_liste)
-    
-"""   
-    balle_y = balle_y + balle_deplacement_vertical 
-    balle_x = balle_x + balle_deplacement_horizontal
+    # mise a jour balle
+    if vies > 0:
+        balle_lancement()
+        balle_deplacement()
+        if balle_y < 32:
+            casserLaBrique()
 
-    balle_deplacement_vertical = balle_deplacement_vertical 
-    balle_depalcement_horizontal = balle_deplacement_horizontal 
-"""    
-
-"""
-    #sortie de plateau
-    if balle_x >= 256 : 
-        balle_deplacement_horizontal = -1
-        
-        
-    if balle_x <= 0 : 
-        balle_deplacement_horizontal = 1 
-    
-    if balle_y >= 256 :
-        balle_y =int(60)
-        balle_x =int(60)
-        balle_deplacement_horizontal = random.randint(-5,5)
-
-        
-    if balle_y <= 0 :
-        balle_deplacement_vertical = 1 
-
-"""
+            # mise a jour de la vitesse en fonction du score
+        if score > 30:
+            vitesse = 2
+        if score > 70:
+            vitesse = 3
+        if score > 100:
+            vitesse = 5
+    else:
+        pyxel.text(45,60,'GAME OVER ! \n \n you died',7)
 
 def draw():
     """création des objets (30 fois par seconde)
     creer_brique()"""
     # vide la fenetre
-    pyxel.cls(0)
-        
-    reDisplayBriques()
+    pyxel.cls(0) 
+    displayBriques()
 
     # plateau (rectangle)
     pyxel.rect(plateau_x, plateau_y, 24, 8, 1)
     
+    # score en haut a gauche
+    pyxel.text(0,0,'score: '+str(score),7)
+    
+    pyxel.text(100,0,'vies: '+str(vies),7)
+    
     #balle (rayon 2)
     #pyxel.circ(plateau_x + 12, plateau_y - 12, 2, 3)    
-#    for balle in balle_liste:
-#         pyxel.circ(balle_x , balle_y , 2, 3)
-
-#    for n in range(0,13):
-#            #brique de base (brique_1)
-#            pyxel.rect(10+8*n,15,8,4,8)
-#            pyxel.rect(10+8*n,15,1,4,0)
 
 creer_bloc()
 pyxel.run(draw, update) 
