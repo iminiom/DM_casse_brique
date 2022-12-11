@@ -476,11 +476,11 @@ def draw():
     pyxel.rect(plateau_x, plateau_y, 24, 8, 1)
     
     # affiche le score en haut a gauche
-    pyxel.text(0,3,'score: '+str(score),7)
+    pyxel.text(1,3,'score: '+str(score),7)
     
     
     #affiche les vies en haut a droite
-    pyxel.text(100,3,'vies: '+str(vies),7)
+    pyxel.text(95,3,'lives: '+str(vies),7)
     
 creer_bloc()
 pyxel.run(draw, update) 
