@@ -98,13 +98,13 @@ def afficher_balle():
     global balle_x
     global balle_y
     if balle_y > 0 and balle_x > 0:
-        pyxel.circ(balle_x,balle_y, 2, 3)
+        pyxel.circ(balle_x,balle_y, 2, 14)
 
 def balle_deplacement():
     global balle_x, balle_y, balle_en_mouvement, direction_x, direction_y, vitesse, plateau_x, plateau_y, vies
     if balle_en_mouvement == True:
-        balle_x = balle_x + vitesse*direction_x
-        balle_y = balle_y + vitesse*direction_y
+        balle_x = balle_x + (vitesse * direction_x)
+        balle_y = balle_y + (vitesse * direction_y)
         afficher_balle()
     #rebondir sur le mur droite
     if balle_x <=0:	#or balle_x >= 120 or balle_y <=0:
@@ -181,107 +181,187 @@ def creer_brique():
 def creer_bloc():
     global bloc
     
-    #Une ligne de briques normales
+   
     ligne4 = [] #Une ligne de 13 briques
-    for n4 in range (0,13):
-        brique = [10*n4,10*n4+8,30,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne4.append(brique)
+    
+    #brique0 a vies 
+    brique = [0,8,45,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    # brique1 incassable 
+    brique = [10,18,45,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique2 a vies 
+    brique = [20,28,45,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    # brique3 incassable 
+    brique = [30,38,45,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique4 normale
+    brique = [40,48,45,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique5 a vies 
+    brique = [50,58,45,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique6 normale
+    brique = [60,68,45,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique7 a vies 
+    brique = [70,78,45,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique8 normale
+    brique = [80,88,45,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    # brique9 incassable 
+    brique = [90,98,45,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique10 a vies 
+    brique = [100,108,45,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    # brique11 incassable 
+    brique = [110,118,45,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+    #brique12 a vies 
+    brique = [120,128,45,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne4.append(brique)
+        
     bloc.append(ligne4)
+    
+    
 
     ligne3 = [] #Une ligne de 13 briques a 3 vies
     
     #brique0 a vies
-    brique = [0,8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [0,8,35,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique1 a vies
-    brique = [10,18,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [10,18,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique2 normale
-    brique = [20,28,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [20,28,35,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique3 normale
-    brique = [30,38,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [30,38,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique4 incassable
-    brique = [40,48,25,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [40,48,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique5 normale
-    brique = [50,58,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [50,58,35,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique6 normale
-    brique = [60,68,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [60,68,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique7 incassable
-    brique = [70,78,25,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [70,78,35,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique8 normale
-    brique = [80,88,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [80,88,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique9 normale
-    brique = [90,98,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [90,98,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique10 incassable
-    brique = [100,108,25,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [100,108,35,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique11 a vies
-    brique = [110,118,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [110,118,35,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     #brique12 a vies
-    brique = [120,128,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [120,128,35,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne3.append(brique)
     
     bloc.append(ligne3)
         
+        
+        
     ligne2 = [] #Une ligne de 13 briques a 3 vies
     
     #brique0 a vies
-    brique = [0,8,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [0,8,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique1 a vies
-    brique = [10,18,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [10,18,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique2 normale
-    brique = [20,28,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [20,28,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique3 normale
-    brique = [30,38,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [30,38,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique4 incassable
-    brique = [40,48,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [40,48,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique5 normale
-    brique = [50,58,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [50,58,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique6 normale
-    brique = [60,68,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [60,68,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique7 incassable
-    brique = [70,78,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [70,78,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique8 normale
-    brique = [80,88,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [80,88,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique9 normale
-    brique = [90,98,20,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [90,98,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique10 incassable
-    brique = [100,108,20,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [100,108,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique11 a vies
-    brique = [110,118,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [110,118,25,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     #brique12 a vies
-    brique = [120,128,20,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    brique = [120,128,25,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
     ligne2.append(brique)
     
     bloc.append(ligne2)
     
     #Une ligne de briques normales
     ligne1 = [] #Une ligne de 13 briques normales
-    for n1 in range (0,13):
-        brique = [10*n1,10*n1+8,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
-        ligne1.append(brique)
+     #brique0 a vies
+    brique = [0,8,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique1 a vies
+    brique = [10,18,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique2 normale
+    brique = [20,28,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique3 normale
+    brique = [30,38,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique4 incassable
+    brique = [40,48,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique5 normale
+    brique = [50,58,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique6 normale
+    brique = [60,68,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique7 incassable
+    brique = [70,78,15,'nomrale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique8 normale
+    brique = [80,88,15,'normale',1]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique9 normale
+    brique = [90,98,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique10 incassable
+    brique = [100,108,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique11 a vies
+    brique = [110,118,15,'a vies',3]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    #brique12 a vies
+    brique = [120,128,15,'incassable',999999]  #une brique définie par x1,x2,y,type de brique,vies restantes
+    ligne1.append(brique)
+    
     bloc.append(ligne1)
+        
    
     print(bloc)
     for m in range(0,3):
@@ -292,19 +372,19 @@ def creer_bloc():
     return bloc            
 
 def couleur_brique(type_de_brique, nombre_de_vies):
-    couleur = 8
+    couleur = 12
     if type_de_brique == 'cassee':
         couleur = 0
         return couleur
     
     if type_de_brique == 'a vies':
         if nombre_de_vies == 3:
-            couleur = 7
+            couleur = 3
         if nombre_de_vies == 2:
-            couleur = 6
+            couleur = 11
         if nombre_de_vies == 1:
             """1 vie = brique normale"""
-            couleur = 8 
+            couleur = 12
         return couleur
 
     if type_de_brique == 'incassable':
@@ -326,7 +406,7 @@ def update():
     if vies > 0:
         balle_lancement()
         balle_deplacement()
-        if balle_y < 32:
+        if balle_y < 50:
             casserLaBrique()
 
             # mise a jour de la vitesse en fonction du score
@@ -338,6 +418,7 @@ def update():
             vitesse = 5
     else:
         pyxel.text(45,60,'GAME OVER ! \n \n you died',7)
+        pyxel.text(25,120,'(press esc to quit)',7)
 
 def draw():
     """création des objets (30 fois par seconde)
