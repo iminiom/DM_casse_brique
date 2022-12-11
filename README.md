@@ -1,5 +1,8 @@
 # DM_casse_brique
 
+To play the game, use this link: https://kitao.github.io/pyxel/wasm/launcher/?run=iminiom.DM_casse_brique.main
+
+
 Specifications:</br>
 
 general mechanics:</br>
@@ -22,4 +25,4 @@ Board:</br>
      - keyboard imputs</br>
      - constent speed</br>
      
-to play the game, use this link: https://kitao.github.io/pyxel/wasm/launcher/?run=iminiom.DM_casse_brique.main
+
