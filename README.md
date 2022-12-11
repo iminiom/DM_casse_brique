@@ -5,7 +5,6 @@ Specifications:</br>
 general mechanics:</br>
      - life system</br>
      - time system</br>
-     - possible menu</br>
 
 Ball: </br>
      - doesn't change seize</br>
