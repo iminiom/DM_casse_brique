@@ -11,7 +11,7 @@ Specifications:</br>
 
 general mechanics:</br>
      - life system</br>
-     - time system</br>
+     - score system</br>
 
 Ball: </br>
      - doesn't change seize</br>
